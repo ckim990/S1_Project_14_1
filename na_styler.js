@@ -13,29 +13,64 @@
    Functions
    =========
    
-   setStyles()
+  setStyles()
       Sets up the style sheets and the style sheet switcher.
       
    randInt(size)
       Returns a random integer from 0 up to size-1.
-
 */
-window.addEventListener("load", setStyles)
+
+window.onload = setStyles;
+
 
 function setStyles() {
       var styleNum = randInt(5);
-      var link = document.createElement("link");
-      link.setAttribute("rel", "stylesheet");
-      link.setAttribute("id", "fancySheet");
-      link.setAttribute("href", "na_style_" + styleNum + ".css");
-      var head = document.getElementsByTagName("head")[0];
-      head.appendChild(link);
+      var linkElem = document.createElement('link');
+      linkElem.setAttribute('rel', 'stylesheet');
+      linkElem.setAttribute('id', 'fancySheet');
+      linkElem.setAttribute('href', 'na_style_' + styleNum + '.css');
+      document.head.appendChild(linkElem);
+      var figBox = document.createElement('figure');
+      figBox.setAttribute('id', 'styleThumbs');
+      var divBox = document.getElementById('box');
+      divBox.appendChild(figBox);
 
-      var figBox = document.createElement("figure");
-      figBox.setAttribute("id", "styleThumbs");
-      document.getElementById("box").appendChild(figBox);
+      for (var i = 0; i <= 4; i++) {
+            var sheetImg = document.createElement('img');
+            sheetImg.setAttribute('src', 'na_small_' + i + '.png');
+            sheetImg.setAttribute('alt', 'na_style_' + i + '.css');
+            sheetImg.addEventListener('click', function (e) {
+                  document.getElementById('fancySheet').setAttribute('href', e.target.alt);
+            })
 
+            figBox.appendChild(sheetImg);
+
+      }
+
+      var fancySheet = document.createElement('style');
+      document.head.appendChild(fancySheet);
+      fancySheet.setAttribute('id', 'fancySheet');
+
+      var thumbStyles = document.createElement('style');
+      document.head.appendChild(thumbStyles);
+      document.styleSheets[document.styleSheets.length - 1].insertRule(
+            "figure#styleThumbs { \
+                   position: absolute; \
+                   left: 0 px; \
+                   bottom: 0 px; \
+                  }", 0);
+      document.styleSheets[document.styleSheets.length - 1].insertRule(
+            "figure#styleThumbs img { \
+            outline: 1 px solid black; \
+            cursor: pointer; \
+            opacity: 0.75; \
+            }", 1);
+      document.styleSheets[document.styleSheets.length - 1].insertRule(
+            "figure#styleThumbs img:hover { \
+                    outline: 1 px solid red; \
+                   opacity: 1.0; \
+            }", 2);
+}
 
 function randInt(size) {
-   return Math.floor(size*Math.random());
-}
+      return Math.floor(size * Math.random());
